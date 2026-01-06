@@ -11,7 +11,7 @@
       "type": "tiles",
       "title": "HOME",
       "avatarText": [
-        { "k": "tm1", "t": "Hey David" },
+        { "k": "tm1", "t": "Hello David" },
         { "k": "tm2", "t": "." },
 
         { "k": "tm2", "t": "\n" },
