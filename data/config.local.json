@@ -25,11 +25,14 @@
   },
 
   "content": {
-    "_comment": "Local file used during development. Later this can be replaced with a GitHub raw URL.",
+    "remoteUrl": "https://raw.githubusercontent.com/ArtByLance/kiosk-tv/main/data/content.local.json",
     "localPath": "data/content.local.json",
-
-    "_comment2": "When you add remote loading, use this key for last-known-good caching.",
     "cacheKey": "tutor.content.lastKnownGood"
+  },
+
+  "events": {
+    "remoteUrl": "https://raw.githubusercontent.com/ArtByLance/kiosk-tv/main/data/events.json?v=1",
+    "localPath": "data/events.json"
   },
 
   "contacts": {

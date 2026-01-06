@@ -66,26 +66,41 @@
       // Make config available globally (TTS + other helpers read it)
       Tutor.Config = config;
 
+      console.log("CONFIG content:", config?.content);
+      console.log("REMOTE URL:", config?.content?.remoteUrl);
+      console.log("LOCAL PATH:", config?.content?.localPath);
+
       // ----------------------------------------------------------
       // 2) Load content next (screen content JSON)
       // ----------------------------------------------------------
       const store = new Tutor.ContentStore({
+        remotePath: config?.content?.remoteUrl, // ← ADD THIS LINE
         localPath: config?.content?.localPath || "data/content.local.json",
         embeddedScriptId: "embedded-content",
         validator: new Tutor.ContentValidator(),
       });
 
       const content = await store.load();
+      console.log("SOURCE:", store.source);
+
+      const home = content.getPage("home");
+      console.log("HOME PAGE RAW:", home);
+
+      console.log("HOME avatarText:", home?.avatarText);
+      console.log("HOME greeting:", home?.greeting);
+      console.log("HOME name:", content?.personName);
 
       // ----------------------------------------------------------
       // 2b) Load events (special events + rules)
       // ----------------------------------------------------------
       const eventsStore = new Tutor.EventsStore({
+        remoteUrl: config?.events?.remoteUrl,
         localPath: config?.events?.localPath || "data/events.json",
       });
 
       const eventsRaw = await eventsStore.load();
-
+      console.log("EVENTS SOURCE:", eventsStore.getSource());
+      console.log("EVENTS ERROR:", eventsStore.getLastError());
       // ----------------------------------------------------------
       // 3) Core app objects
       // ----------------------------------------------------------

@@ -4,6 +4,7 @@
   class ContentStore {
     constructor(opts) {
       this.localPath = opts.localPath || "content.local.json";
+      this.remotePath = opts.remotePath || null; // ← ADD THIS
       this.embeddedScriptId = opts.embeddedScriptId || "embedded-content";
       this.validator = opts.validator || new Tutor.ContentValidator();
       this.active = null;
@@ -11,29 +12,43 @@
     }
 
     async load() {
-      // 1) Try fetch local JSON (works when served over http://)
-      const fetched = await this._tryFetchJSON(this.localPath);
-      if (fetched.ok)
-        return this._activate(fetched.raw, `fetch:${this.localPath}`);
+      this.lastError = null;
 
-      // 2) Fallback to embedded JSON (works for file://)
-      const embedded = this._tryReadEmbeddedJSON();
-      if (embedded.ok) return this._activate(embedded.raw, "embedded");
+      // 1) Try REMOTE first
+      if (this.remoteUrl) {
+        const fetchedRemote = await this._tryFetchJSON(this.remoteUrl);
 
-      // 3) Fail with best error
-      const msg = [
-        "Unable to load content.",
-        fetched.error ? `Fetch error: ${fetched.error}` : null,
-        embedded.error ? `Embedded error: ${embedded.error}` : null,
-      ]
-        .filter(Boolean)
-        .join(" ");
-      throw new Error(msg);
+        if (fetchedRemote.ok) {
+          // ✅ SUCCESS: cache + activate
+          this._writeCache(fetchedRemote.raw);
+          return this._activate(fetchedRemote.raw, `remote:${this.remoteUrl}`);
+        }
+
+        // ❌ REMOTE failed
+        this.lastError = fetchedRemote.error;
+      }
+
+      // 2) Try LAST-KNOWN-GOOD cache
+      const cached = this._readCache();
+      if (cached) {
+        return this._activate(cached, "cache:lastKnownGood");
+      }
+
+      // 3) Try LOCAL file
+      const fetchedLocal = await this._tryFetchJSON(this.localPath);
+      if (fetchedLocal.ok) {
+        return this._activate(fetchedLocal.raw, `local:${this.localPath}`);
+      }
+
+      // 4) Fail-soft
+      this.lastError = fetchedLocal.error;
+      return this._activate({ meta: {}, rules: [], events: [] }, "empty");
     }
-
     async _tryFetchJSON(path) {
       try {
-        const res = await fetch(path, { cache: "no-store" });
+        const sep = path.includes("?") ? "&" : "?";
+        const url = `${path}${sep}v=${Date.now()}`;
+        const res = await fetch(url, { cache: "no-store" });
         if (!res.ok) return { ok: false, error: `HTTP ${res.status}` };
         const raw = await res.json();
         const v = this.validator.validate(raw);
@@ -92,6 +107,25 @@
       this.active = new Tutor.ContentModel(pruned);
       this.source = source;
       return this.active;
+    }
+
+    _readCache() {
+      try {
+        const key =
+          Tutor?.Config?.content?.cacheKey || "tutor.content.lastKnownGood";
+        const s = localStorage.getItem(key);
+        return s ? JSON.parse(s) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    _writeCache(raw) {
+      try {
+        const key =
+          Tutor?.Config?.content?.cacheKey || "tutor.content.lastKnownGood";
+        localStorage.setItem(key, JSON.stringify(raw));
+      } catch (e) {}
     }
   }
 
