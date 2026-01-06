@@ -12,7 +12,7 @@
       "enabled": true,
       "tags": ["laundry"],
       "priority": 50,
-      "message": "Laundry Night! Put your clothes out tonight.",
+      "message": "Laundry Day! Put your clothes out tonight.",
       "schedule": {
         "type": "weekly",
         "dow": "MON",
