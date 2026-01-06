@@ -1,0 +1,2106 @@
+/* =========================================================
+   Tutor UI — CSS v2 (clean)
+   Goals
+   - Big targets
+   - High contrast
+   - Fixed header + fixed footer
+   - Content area scales, no accidental scroll
+   - Avatar pane is a “stage” that fills its column
+   ========================================================= */
+
+/* ---------- Theme tokens ---------- */
+:root {
+  --bg: #0b0d12;
+  --panel: #111318;
+  --panel2: #0d0f14;
+
+  --text: #f5f7ff;
+  --muted: #c7cbe2;
+
+  --border: rgba(255, 255, 255, 0.1);
+  --border2: rgba(255, 255, 255, 0.14);
+
+  --btn: #1a2240;
+  --btn2: #222c52;
+
+  --accent: #ffe08a;
+  --danger: #ffb4b4;
+  --ok: #bff7cf;
+
+  --radius: 18px;
+  --shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+
+  /* Layout */
+  --avatarW: 440px; /* right column width */
+  --pad: 18px; /* frame padding */
+  --gap: 16px; /* gap between columns */
+
+  /* Nav button colors */
+  --color-back: #2686ff;
+  --color-home: #2686ff;
+  --color-on: #1db954;
+  --color-off: #e53935;
+  --color-call: #371d64;
+
+  --sched-icon-size: 54px; /* default (non-event) */
+  --sched-icon-gap: 10px;
+}
+
+/* ---------- Base reset ---------- */
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+  /* kiosk behavior */
+  overflow: hidden;
+}
+
+/* ---------- App host (fills screen) ---------- */
+.app {
+  width: 100vw;
+  height: 100vh;
+}
+
+/* The element you mount PageFrame into */
+#debug {
+  width: 100%;
+  height: 100%;
+}
+
+/* Optional status overlay (if you use it) */
+.status {
+  position: fixed;
+  left: 18px;
+  top: 12px;
+  z-index: 9999;
+  font-weight: 800;
+}
+.status.hidden {
+  display: none;
+}
+
+/* ---------- Frame shell (fixed header + main + footer) ---------- */
+.frame {
+  width: 100%;
+  height: 100%;
+
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+
+  background: linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+
+  overflow: hidden;
+}
+
+/* Header */
+.frame-header {
+  padding: var(--pad);
+  border-bottom: 1px solid var(--border);
+}
+.frame-header-title {
+  font-size: 45px; /* 1.5× */
+  font-weight: 900;
+  letter-spacing: 0.3px;
+}
+.frame-header-subtitle {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 20px;
+  line-height: 1.35;
+}
+
+/* Main split (content + avatar) */
+.frame-main {
+  display: grid;
+  grid-template-columns: 1fr var(--avatarW);
+  gap: var(--gap);
+  padding: var(--pad);
+
+  /* keep main from pushing footer */
+  min-height: 0;
+  overflow: hidden;
+}
+
+.frame-content {
+  min-height: 0;
+  overflow: hidden; /* no scroll unless you decide later */
+}
+
+.frame-avatar {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Footer nav */
+.frame-nav {
+  padding: 12px;
+  border-top: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.2);
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+/* Footer buttons — square, icon + label */
+/* Footer buttons — solid fill, white icon/text */
+.nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  height: 160px;
+  padding: 16px;
+
+  background: #333; /* default fallback */
+  border: none;
+  border-radius: 22px;
+
+  font-size: 23px;
+  font-weight: 900;
+  letter-spacing: 0.6px;
+  color: #fff;
+
+  cursor: pointer;
+  user-select: none;
+}
+
+/* icon */
+.nav-btn img {
+  width: 85px;
+  height: 85px;
+  filter: brightness(0) invert(1); /* force white SVGs */
+}
+
+/* label */
+.nav-btn span {
+  color: #fff;
+}
+
+/* press feedback */
+.nav-btn:active {
+  transform: translateY(2px);
+  filter: brightness(0.9);
+}
+
+.nav-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+  transform: none;
+}
+
+/* ---- role colors ---- */
+.nav-btn.home {
+  background: var(--color-home);
+}
+.nav-btn.back {
+  background: var(--color-back);
+}
+.nav-btn.on {
+  background: var(--color-on);
+}
+.nav-btn.off {
+  background: var(--color-off);
+}
+
+.nav-btn.call {
+  background: var(--color-call);
+}
+
+/* ---------- Pages / renderers ---------- */
+.page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.page-title {
+  font-size: 36px;
+  font-weight: 900;
+  line-height: 1.15;
+  margin: 0;
+}
+.page-subtitle {
+  color: var(--muted);
+  font-size: 20px;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.home-message {
+  background: rgba(255, 255, 255, 0.06);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  font-size: 22px;
+  line-height: 1.25;
+  white-space: pre-line;
+}
+
+/* Tiles */
+.tile-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+.tile {
+  background: var(--btn);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+
+  padding: 18px;
+  min-height: 120px;
+
+  font-size: 35px;
+  font-weight: 900;
+  line-height: 1.12;
+  color: var(--text);
+
+  cursor: pointer;
+  user-select: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  transition: transform 0.08s ease, background 0.08s ease;
+}
+.tile:active {
+  transform: scale(0.99);
+  background: var(--btn2);
+}
+
+.tile-grid.tiles-1col {
+  grid-template-columns: 1fr;
+}
+.tile-grid.tiles-2col {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.tile-grid .tile {
+  width: 100%;
+}
+
+/* Sections (info/schedule) */
+.section {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  overflow: visible;
+}
+.section h3 {
+  margin: 0 0 12px 0;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+.section p {
+  margin: 0 0 10px 0;
+  font-size: 20px;
+  color: var(--text);
+}
+.muted {
+  color: var(--muted);
+}
+
+/* Say page (left side) */
+.say-title {
+  font-size: 22px;
+  font-weight: 900;
+  margin: 0 0 12px 0;
+}
+.say-command {
+  font-size: 36px;
+  font-weight: 900;
+  line-height: 1.2;
+
+  padding: 18px;
+  border-radius: 16px;
+  border: 2px solid var(--border2);
+  background: rgba(255, 255, 255, 0.04);
+}
+.say-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+.say-btn {
+  font-size: 20px;
+  font-weight: 900;
+  padding: 14px 12px;
+
+  border-radius: 14px;
+  border: 2px solid var(--border2);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+
+  cursor: pointer;
+}
+.say-btn:active {
+  transform: scale(0.99);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ---------- Avatar pane (right column stage) ---------- */
+.avatarPane {
+  position: absolute;
+  inset: 0;
+
+  background: transparent;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Speech bubble (light, attached to avatar) */
+.avatarBubble {
+  position: absolute;
+
+  /* Default “gold zone” position */
+  top: 4px;
+  right: 4px;
+
+  /* Fixed readable width */
+  width: 420px;
+  max-width: calc(100% - 48px);
+
+  z-index: 10;
+  box-sizing: border-box;
+
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.avatarBubble.isVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* bubble body */
+.avatarBubbleBody {
+  background: rgba(230, 242, 255, 0.95); /* soft blue-white */
+  border: 3px solid rgba(0, 132, 204, 0.9); /* calm blue outline */
+  border-radius: 26px;
+
+  padding: 18px 20px;
+  max-width: 380px;
+
+  /* subtle lift */
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+}
+
+/* bubble text */
+.avatarBubbleText {
+  color: rgba(0, 90, 150, 0.95);
+  font-size: 32px;
+  line-height: 1.25;
+  font-weight: 800;
+}
+
+/* bubble actions */
+.avatarBubbleActions {
+  margin-top: 14px;
+  display: flex;
+  gap: 12px;
+}
+
+/* buttons inside bubble */
+.avatarHearBtn {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 16px;
+
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.8);
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.avatarHearBtn:active {
+  transform: translateY(1px);
+}
+
+/* Avatar “body” stage — free-float (no window/frame) */
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: 100% 100%; /* anchor lower-right */
+  pointer-events: none;
+}
+
+/* Simple rounded rectangle plate */
+.avatarBubblePlate {
+  position: absolute;
+  inset: 0;
+
+  background: rgba(230, 242, 255, 0.96);
+  border: 3px solid rgba(0, 132, 204, 0.9);
+  border-radius: 24px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  pointer-events: none; /* clicks go to buttons/text */
+}
+
+/* Content sits above plate */
+.avatarBubbleContent {
+  position: relative;
+  z-index: 1;
+  padding: 18px 20px;
+}
+
+/* Text */
+.avatarBubbleText {
+  font-size: 26px;
+  line-height: 1.25;
+  font-weight: 600;
+  color: rgba(47, 102, 163, 0.95);
+  white-space: pre-line;
+}
+
+/* Avatar image — no cropping */
+.avatarImg {
+  display: block;
+
+  /* Native image size */
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+
+  object-fit: none;
+
+  pointer-events: none;
+}
+
+/* ---------- Responsive fallback ---------- */
+@media (max-width: 900px) {
+  :root {
+    --avatarW: 320px;
+  }
+
+  .frame {
+    border-radius: 0;
+  }
+  .tile-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Overrides ---------- */
+.frame {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+.frame-nav {
+  position: absolute;
+  left: 0;
+  right: var(--avatarW); /* stop before avatar */
+  bottom: 0;
+}
+.frame-main {
+  padding-bottom: 110px; /* footer height buffer */
+}
+
+/* semantic button colors */
+.nav-btn.home {
+  border-color: var(--color-home);
+  color: var(--color-home);
+}
+.nav-btn.back {
+  border-color: var(--color-back);
+  color: var(--color-back);
+}
+.nav-btn.on {
+  border-color: var(--color-on);
+  color: var(--color-on);
+}
+.nav-btn.off {
+  border-color: var(--color-off);
+  color: var(--color-off);
+}
+
+.nav-btn.call {
+  border-color: var(--color-call);
+  color: var(--color-call);
+}
+
+:root {
+  --nav-scale: 0.65; /* 35% smaller */
+}
+.frame-nav {
+  transform: scale(var(--nav-scale));
+  transform-origin: bottom center;
+}
+
+.frame-nav {
+  left: 16px; /* match section padding/gutter */
+  right: auto;
+  width: auto;
+  transform-origin: bottom left;
+
+  .frame-nav {
+    left: 20px;
+  }
+}
+
+/* HELP button only — force gold background, even if other rules win */
+.frame-nav .nav-btn.help {
+  background: rgb(213, 160, 2) !important;
+  border-color: rgba(255, 210, 77, 0.75) !important;
+  color: #fff !important;
+}
+
+/* Keep hover/active from reverting it */
+.frame-nav .nav-btn.help:hover,
+.frame-nav .nav-btn.help:active {
+  background: rgba(255, 210, 77, 1) !important;
+}
+
+/* ===== Schedule Today: let cards run under the bottom nav ===== */
+
+/* 1) Make the nav overlay the content (not take layout space) */
+.frame-nav {
+  position: absolute; /* or fixed if you prefer */
+  left: 0;
+  right: var(--avatarW);
+  bottom: 0;
+  z-index: 50;
+}
+
+/* 2) Remove the "reserved space" we added earlier */
+.frame-main {
+  padding-bottom: 0 !important;
+}
+
+/* 3) Optional: if anything still clips, allow vertical overflow */
+.frame,
+.frame-main,
+.frame-content {
+  overflow: hidden; /* keeps the off-screen part hidden */
+}
+
+/* 3) If you want the row left-aligned (no weird “spread out” gaps) */
+.frame-nav {
+  justify-content: flex-start;
+}
+
+/* NAV: make the bar fit the buttons only */
+.frame-nav {
+  height: 200px; /* you asked */
+  padding: 16px; /* space around buttons */
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 16px;
+
+  box-sizing: border-box;
+}
+
+/* Buttons fill nav height (minus padding) and stay square */
+.frame-nav .nav-btn {
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  width: auto;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+}
+/* Nav container becomes invisible */
+.frame-nav {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+/* Let the avatar side spill left over the content area (no clipping) */
+.frame-main,
+.frame-avatar {
+  overflow: visible;
+}
+
+/* Make sure the right pane can stack above the left pane */
+.frame-content {
+  position: relative;
+  z-index: 1;
+}
+
+.frame-avatar {
+  position: relative;
+  z-index: 2;
+}
+
+/* Bubble sits behind the avatar, but above the left-side controls */
+.avatarBubble {
+  z-index: 20;
+}
+
+/* Avatar image sits in front of the bubble */
+.avatarBody,
+.avatarImg {
+  position: relative;
+  z-index: 30;
+}
+
+/* Frame must be positioning context */
+.frame {
+  position: relative;
+}
+
+/* Avatar host becomes a full-screen overlay */
+.frame-avatar {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  z-index: 50; /* above main content */
+  pointer-events: none; /* allow clicks to pass through by default */
+}
+
+/* AvatarPane fills the overlay */
+.avatarPane {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+/* Bubble should still be clickable */
+.avatarBubble,
+.avatarBubble * {
+  pointer-events: auto;
+}
+
+/* Make the avatar overlay actually have a full-size stage */
+.frame-main {
+  position: relative;
+}
+
+.frame-avatar {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* AvatarPane must also fill the overlay */
+.avatarPane {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+/* Keep avatar image anchored bottom-right */
+.avatarBody {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+.avatarImg {
+  height: 100vh;
+  width: auto;
+
+  position: absolute;
+  right: 0;
+  bottom: 0;
+
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* Bubble sits behind avatar image */
+.avatarBubble {
+  z-index: 21;
+}
+
+.avatarPane {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  overflow: visible;
+}
+.avatarBody {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+
+  transform-origin: bottom right;
+  pointer-events: none;
+}
+
+.avatarPane {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.avatarBubble {
+  pointer-events: auto;
+}
+
+.avatarBody {
+  pointer-events: none;
+}
+
+.avatarBody {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 60; /* avatar on top */
+  pointer-events: none;
+}
+
+.avatarBubble {
+  z-index: 55; /* bubble behind avatar */
+  pointer-events: auto;
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 420px;
+  max-width: calc(100% - 48px);
+  z-index: 55;
+  box-sizing: border-box;
+
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 180ms ease, transform 180ms ease;
+
+  padding: 22px 26px;
+}
+
+/* Avatar overlay layer (must NOT be clipped by page layout) */
+.avatarPane {
+  position: fixed;
+  inset: 0;
+  z-index: 999; /* above the main UI */
+  overflow: visible; /* allow bubble + avatar to extend anywhere */
+  pointer-events: none; /* overlay doesn’t block taps by default */
+}
+
+/* =========================================================
+   HOME ALERT — MATCH “SCHEDULE EVENT” LOOK
+   Paste near your home-message styles (or at bottom)
+   ========================================================= */
+
+/* Treat the home alert like an event line */
+.home-message {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  color: #fff8e1; /* event title bright */
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.08;
+  opacity: 1;
+
+  white-space: pre-line;
+}
+
+/* If you want the “time” line feel (gold + slightly dim) */
+.home-message .time,
+.home-message .home-time,
+.home-message .schedule-time {
+  color: #ffa544 !important;
+  opacity: 0.65;
+  font-weight: 600;
+  text-transform: lowercase;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+/* If your alert includes a smaller “note” style line */
+.home-message .note,
+.home-message .home-note,
+.home-message .schedule-note {
+  color: #ffa544 !important;
+  opacity: 0.65;
+  font-weight: 400;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+/* Optional: if home-message is inside a .section and you want it to NOT look boxed */
+.section .home-message {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+/* =========================================================
+   SCHEDULE / TODAY — RESTORED (paste at VERY BOTTOM of app.css)
+   ========================================================= */
+
+/* =========================================================
+   HARD OVERRIDE: Let Schedule cards slide UNDER the nav
+   (put at VERY bottom of app.css)
+   ========================================================= */
+
+/* Nav overlays content (does NOT take layout space) */
+
+/* =========================================================
+   CLEAN SCHEDULE / TODAY (single source of truth)
+   ========================================================= */
+
+.page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Bold times on schedule cards */
+.page.schedule-today .schedule-time {
+  font-weight: 600;
+  font-size: 1em;
+  text-transform: lowercase;
+}
+
+/* Remove italics from comments/notes */
+.page.schedule-today .schedule-note {
+  font-weight: 400;
+  font-style: normal;
+  text-transform: uppercase;
+  font-size: 0.8em; /* ~20% smaller */
+}
+
+.page.schedule-today .schedule-line.schedule-event-line .schedule-label {
+  color: #f8b537 !important;
+}
+
+/* More space only when an event comes after another schedule row */
+.page.schedule-today .schedule-line + .schedule-line.schedule-event-line {
+  margin-top: 26px !important;
+}
+
+:root {
+  --sched-gap: 16px;
+  --sched-header-gold: #d6b24c;
+
+  --sched-event-bg: rgba(255, 210, 77, 0.3);
+
+  --sched-icon-col: 1.6em;
+  --sched-icon-gap: 0.6em;
+}
+
+/* 3-column Today grid */
+.page.schedule-today {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sched-gap);
+
+  /* Key: equal-height cards (match tallest) */
+  align-items: stretch;
+}
+.page.schedule-today .section {
+  height: 100%;
+}
+@media (max-width: 900px) {
+  .page.schedule-today {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Daypart headers (Morning / Midday / Evening) */
+.page.schedule-today .section > h3 {
+  margin: 0 0 14px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+
+  font-size: 0.95em;
+  font-weight: 400;
+
+  color: var(--sched-header-gold);
+  opacity: 0.85;
+}
+
+/* Standard 3-line schedule item layout (ICON COLUMN + TEXT COLUMN) */
+.page.schedule-today .schedule-line {
+  display: grid;
+  grid-template-columns: var(--sched-icon-col) 1fr;
+  column-gap: var(--sched-icon-gap);
+  row-gap: 8px;
+
+  width: 100%;
+  margin: 18px 0;
+  box-sizing: border-box;
+}
+
+/* Put the label/time/note in column 2 so icons line up like the event block */
+.page.schedule-today .schedule-label,
+.page.schedule-today .schedule-time,
+.page.schedule-today .schedule-note {
+  grid-column: 2;
+}
+
+/* Label / time / note typography (used by ALL items, incl events) */
+.page.schedule-today .schedule-label {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  font-size: 1.25em;
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.page.schedule-today .schedule-time {
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.page.schedule-today .schedule-note {
+  font-style: italic;
+  opacity: 0.95;
+  line-height: 1.15;
+
+  /* prevent weird breaking */
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+
+/* ICONS (driven by your data-label hook) */
+.page.schedule-today .schedule-line::before {
+  grid-column: 1;
+  grid-row: 1 / span 3;
+
+  display: block;
+  width: var(--sched-icon-col);
+  text-align: center;
+
+  line-height: 1;
+  margin-top: 0.1em;
+  opacity: 0.9;
+
+  content: "";
+}
+
+/* Meals = coffee */
+.page.schedule-today .schedule-label[data-label^="breakfast"]::before,
+.page.schedule-today .schedule-label[data-label^="lunch"]::before,
+.page.schedule-today .schedule-label[data-label^="supper"]::before,
+.page.schedule-today .schedule-label[data-label^="dinner"]::before {
+  content: none; /* kill any older label-based icons */
+}
+.page.schedule-today
+  .schedule-line:has(.schedule-label[data-label^="breakfast"])::before,
+.page.schedule-today
+  .schedule-line:has(.schedule-label[data-label^="lunch"])::before,
+.page.schedule-today
+  .schedule-line:has(.schedule-label[data-label^="supper"])::before,
+.page.schedule-today
+  .schedule-line:has(.schedule-label[data-label^="dinner"])::before {
+  content: "☕";
+}
+
+/* Medicine = pill */
+.page.schedule-today
+  .schedule-line:has(.schedule-label[data-label^="medicine"])::before,
+.page.schedule-today
+  .schedule-line:has(.schedule-label[data-label^="meds"])::before {
+  content: "💊";
+}
+
+/* Events: ONLY difference is highlight + bell icon (text stays identical) */
+/* ===== Event card: no outline, clean ===== */
+.page.schedule-today .schedule-line.schedule-event-line {
+  background: rgba(0, 0, 0, 0.25); /* or transparent if you prefer */
+  border: none !important;
+  box-shadow: none !important;
+
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin: 18px 0;
+
+  box-sizing: border-box;
+}
+
+/* Kill any legacy outline/markers */
+.page.schedule-today .schedule-line.schedule-event-line::before,
+.page.schedule-today .schedule-line.schedule-event-line::after {
+  content: none !important;
+}
+
+/* ===== HARD KILL: label-based icons ===== */
+.schedule-label::before {
+  content: none !important;
+}
+/* =========================================================
+   ICONS OFF (placeholder column kept for future SVG icons)
+   Paste at very bottom of app.css
+   ========================================================= */
+
+/* Kill any old label-based icons */
+.page.schedule-today .schedule-label::before {
+  content: none !important;
+}
+
+/* Lock schedule rows into 2-column layout (icon slot + text) */
+.page.schedule-today .schedule-line {
+  display: grid !important;
+  grid-template-columns: 1.6em 1fr !important; /* icon slot stays */
+  column-gap: 0.6em !important;
+  row-gap: 8px !important;
+  align-items: start !important;
+  width: 100%;
+}
+
+/* Text always in column 2 */
+.page.schedule-today .schedule-label,
+.page.schedule-today .schedule-time,
+.page.schedule-today .schedule-note {
+  grid-column: 2;
+}
+
+/* Turn OFF any row-based pseudo icon */
+.page.schedule-today .schedule-line::before {
+  content: "" !important;
+  display: block;
+  grid-column: 1;
+  grid-row: 1 / span 3;
+}
+
+/* Event styling stays (background only) */
+.page.schedule-today .schedule-line.schedule-event-line {
+  background: rgba(255, 210, 77, 0.3);
+  border-radius: 18px;
+  padding: 16px 16px;
+  border-left: none !important;
+  box-shadow: none !important;
+}
+.page.schedule-today .schedule-line.schedule-event-line::after {
+  content: none !important;
+}
+
+/* =========================================================
+   TODAY page: subdue block text (keep titles strong)
+   Paste at very bottom of app.css
+   ========================================================= */
+
+:root {
+  /* tweak these */
+  --sched-title-color: #d6b24c; /* your gold daypart headers */
+  --sched-body-blue: rgba(110, 185, 255, 0.78); /* light blue */
+  --sched-body-blue-muted: rgba(110, 185, 255, 0.62);
+}
+
+/* Keep daypart titles as-is (already gold in your file) */
+.page.schedule-today .section > h3 {
+  color: var(--sched-title-color);
+}
+
+/* Subdue everything inside the cards by default */
+.page.schedule-today .section {
+  color: var(--sched-body-blue);
+}
+
+/* Then explicitly set the rows */
+.page.schedule-today .schedule-time,
+.page.schedule-today .schedule-note {
+  color: var(--sched-body-blue);
+}
+
+/* If you want the label (Breakfast, Lunch, Medicine) still “title-like”, keep it brighter */
+.page.schedule-today .schedule-label {
+  color: rgba(140, 205, 255, 0.92);
+}
+
+/* Optional: make notes a touch softer than time */
+.page.schedule-today .schedule-note {
+  color: var(--sched-body-blue-muted);
+}
+/* Schedule item labels: WHITE, readable, calm */
+.page.schedule-today .schedule-label {
+  color: #ffffff;
+}
+
+/* ===== Event emphasis (Today): dark pink outline + text ===== */
+:root {
+  --event-pink: rgba(210, 95, 140, 0.85); /* dark-ish, calm pink */
+}
+
+/* ===== Event emphasis (Today): dark pink outline + secondary text ===== */
+:root {
+  --event-pink: rgba(210, 95, 140, 0.85); /* dark-ish, calm pink */
+}
+
+/* Event card */
+.page.schedule-today .schedule-line.schedule-event-line {
+  background: transparent !important;
+  border: none !important;
+
+  border-radius: 14px;
+
+  /* outline drawn INSIDE the card */
+  box-shadow: inset 0 0 0 6px var(--event-pink) !important;
+
+  padding: 18px 16px;
+  margin: 22px 0;
+
+  box-sizing: border-box;
+}
+
+/* KEEP label white */
+.page.schedule-today .schedule-line.schedule-event-line .schedule-label {
+  color: #ffffff;
+}
+
+/* Event secondary text uses pink */
+.page.schedule-today .schedule-line.schedule-event-line .schedule-time,
+.page.schedule-today .schedule-line.schedule-event-line .schedule-note {
+  color: var(--event-pink);
+}
+
+/* Kill any legacy markers/bars */
+.page.schedule-today .schedule-line.schedule-event-line::before,
+.page.schedule-today .schedule-line.schedule-event-line::after {
+  content: none !important;
+}
+
+/* ===== Today schedule cards: +25% text size ===== */
+.page.schedule-today .section {
+  font-size: 1.25em;
+}
+
+/* ===== Schedule row layout: icon + text stack (single standard) ===== */
+.page.schedule-today .schedule-line {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  column-gap: 14px;
+  align-items: start;
+  width: 100%;
+}
+
+/* SVG icon (img) */
+.page.schedule-today .schedule-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  opacity: 0.95;
+  margin-top: 2px;
+}
+
+/* Text wrapper */
+.page.schedule-today .schedule-text {
+  min-width: 0;
+}
+
+/* Keep label/time/note stacking clean */
+.page.schedule-today .schedule-label,
+.page.schedule-today .schedule-time,
+.page.schedule-today .schedule-note {
+  margin: 0;
+}
+
+/* Prevent weird wrapping */
+.page.schedule-today .schedule-time {
+  white-space: nowrap;
+}
+
+.page.schedule-today .schedule-icon {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  opacity: 0.9;
+}
+
+/* ===== Schedule icons as visual anchors (top of card) ===== */
+/* ===== Icon sizing (single control) ===== */
+.page.schedule-today .schedule-icon {
+  width: calc(var(--schedule-icon-size) * 1.5);
+  height: calc(var(--schedule-icon-size) * 1.5);
+  margin-bottom: 12px;
+}
+
+/* Events slightly larger for emphasis */
+.page.schedule-today .schedule-event-line .schedule-icon {
+  width: calc(var(--schedule-icon-size) * 1.65);
+  height: calc(var(--schedule-icon-size) * 1.65);
+}
+
+/* Center icon slightly without looking like a bullet */
+.page.schedule-today .schedule-line {
+  padding-top: 10px;
+}
+
+/* Reset any leftover inline / grid behavior */
+.page.schedule-today .schedule-line,
+.page.schedule-today .schedule-text {
+  display: block;
+}
+
+/* Tighten label spacing now that icon is above */
+.page.schedule-today .schedule-label {
+  margin-top: 0;
+}
+
+.page.schedule-today .schedule-event-line .schedule-icon {
+  margin-bottom: 4px;
+}
+
+/* Event: stack icon above text (not side-by-side) */
+.page.schedule-today .schedule-event-line {
+  display: block;
+}
+
+/* Center + stack the event icon */
+.page.schedule-today .schedule-event-line .schedule-icon {
+  display: block;
+  margin: 0 0 8px 0;
+}
+
+/* ===== Fix: event icon should behave like all other rows (icon as first line) ===== */
+
+/* Make EVERY schedule row a simple vertical stack */
+.page.schedule-today .schedule-line {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+}
+
+/* Kill any leftover grid behavior specifically on event rows */
+.page.schedule-today .schedule-line.schedule-event-line {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Icon as its own first line, consistent everywhere */
+.page.schedule-today .schedule-icon {
+  width: var(--sched-icon-size, 48px);
+  height: var(--sched-icon-size, 48px);
+  margin: 0 0 10px 0; /* space between icon and label */
+  flex: 0 0 auto;
+}
+
+/* Text wrapper should just fill the row */
+.page.schedule-today .schedule-text {
+  width: 100%;
+}
+
+/* If you have any old “grid-column” rules lingering, neutralize them */
+.page.schedule-today .schedule-label,
+.page.schedule-today .schedule-time,
+.page.schedule-today .schedule-note {
+  grid-column: auto !important;
+}
+
+.page.schedule-today .schedule-line.schedule-event-line .schedule-icon {
+  --sched-icon-size: 66px; /* +50% visual weight */
+}
+
+/* All schedule row icons */
+.page.schedule-today .schedule-icon {
+  width: var(--sched-icon-size) !important;
+  height: var(--sched-icon-size) !important;
+  display: block;
+  margin: 0 0 var(--sched-icon-gap) 0;
+}
+
+/* Event icon only (bigger) */
+.page.schedule-today .schedule-line.schedule-event-line .schedule-icon {
+  width: calc(var(--sched-icon-size) * 1.2) !important;
+  height: calc(var(--sched-icon-size) * 1.2) !important;
+}
+/* ===== Schedule rows: icon on its own line (consistent everywhere) ===== */
+:root {
+  --sched-icon-size: 100px; /* normal rows */
+  --sched-icon-gap: 0px;
+  --sched-event-icon-mult: 1; /* event rows */
+}
+
+/* Make ALL schedule rows stack icon above text */
+.page.schedule-today .schedule-line {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Base icon styling */
+.page.schedule-today .schedule-icon {
+  width: var(--sched-icon-size) !important;
+  height: var(--sched-icon-size) !important;
+  margin: 0 0 var(--sched-icon-gap) 0 !important;
+  flex: 0 0 auto;
+  display: block;
+}
+
+/* Event row: only the icon gets bigger */
+.page.schedule-today .schedule-line.schedule-event-line .schedule-icon {
+  width: calc(var(--sched-icon-size) * var(--sched-event-icon-mult)) !important;
+  height: calc(
+    var(--sched-icon-size) * var(--sched-event-icon-mult)
+  ) !important;
+}
+
+/* Text wrapper should just fill the row */
+.page.schedule-today .schedule-text {
+  width: 100%;
+}
+
+/* Kill leftover grid-column rules */
+.page.schedule-today .schedule-label,
+.page.schedule-today .schedule-time,
+.page.schedule-today .schedule-note {
+  grid-column: auto !important;
+}
+
+/* Tighten space between daypart header and first item */
+.page.schedule-today .section > h3 {
+  margin-bottom: 6px; /* was larger */
+}
+
+/* Remove extra top space on the first row only */
+.page.schedule-today .section .schedule-line:first-of-type {
+  margin-top: 0;
+}
+
+/* Daypart header layout */
+.page.schedule-today .daypart-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Daypart SVG icon */
+.page.schedule-today .daypart-icon {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+}
+
+:root {
+  --sched-row-margin-y: 10px; /* space between blocks */
+  --sched-icon-gap: -6px; /* space between icon and label (can be negative) */
+}
+
+/* The whole block */
+.page.schedule-today .schedule-line {
+  margin: var(--sched-row-margin-y) 0 !important;
+  padding: 0 !important;
+}
+
+/* Icon spacing ABOVE the label */
+.page.schedule-today .schedule-icon {
+  display: block;
+  margin: 0 0 var(--sched-icon-gap) 0 !important;
+}
+
+/* If label still sits low, it's often line-height */
+.page.schedule-today .schedule-label {
+  line-height: 1.05 !important;
+}
+
+/* HARD KILL: event outline / inset shadow */
+.page.schedule-today .schedule-line.schedule-event-line {
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+}
+
+/* =========================================================
+   FINAL — Icon sizing (this MUST be at the very bottom)
+   ========================================================= */
+
+:root {
+  --sched-icon-size: 68px; /* 20% down from 48px */
+  --sched-icon-gap: -6px; /* tighten label closer, tweak if needed */
+}
+
+/* Force icon sizing everywhere */
+.page.schedule-today .schedule-icon {
+  width: var(--sched-icon-size) !important;
+  height: var(--sched-icon-size) !important;
+  max-width: var(--sched-icon-size) !important;
+  max-height: var(--sched-icon-size) !important;
+  flex: 0 0 var(--sched-icon-size) !important;
+  display: block !important;
+  margin: 0 0 var(--sched-icon-gap) 0 !important;
+}
+
+/* =========================================================
+   FINAL — Event colors (gold emphasis)
+   ========================================================= */
+
+:root {
+  --event-gold: #ffa544; /* hot highlighter yellow */
+  --event-text-dim: 0.6; /* 40% intensity */
+}
+
+.page.schedule-today .schedule-line.schedule-event-line .schedule-icon,
+.page.schedule-today .schedule-line.schedule-event-line .schedule-label {
+  color: var(--event-gold);
+  fill: var(--event-gold);
+}
+.page.schedule-today .schedule-line.schedule-event-line .schedule-time,
+.page.schedule-today .schedule-line.schedule-event-line .schedule-note {
+  color: var(--event-gold);
+  opacity: var(--event-text-dim);
+}
+
+/* Event title back to white */
+.page.schedule-today .schedule-line.schedule-event-line .schedule-label {
+  color: #fff8e1 !important;
+}
+
+/* Daypart header icons only (Morning / Midday / Evening) */
+.page.schedule-today .section > h3 img {
+  height: 44px; /* bigger */
+  width: auto; /* aspect locked */
+
+  transform: translateY(-9px); /* lift horizon toward the label */
+  transform-origin: left center;
+
+  margin-right: 12px;
+  opacity: 0.95;
+}
+
+.page.schedule-today .section > h3 {
+  font-size: 1.3em;
+  letter-spacing: 0.12em;
+  color: #e2c15a;
+}
+
+:root {
+  --sched-line-spacing: 1.1;
+  --sched-block-gap: 0.4em;
+}
+.page.schedule-today .schedule-label {
+  line-height: var(--sched-line-spacing);
+  margin-bottom: var(--sched-block-gap);
+}
+
+.page.schedule-today .schedule-time {
+  line-height: var(--sched-line-spacing);
+  margin-bottom: var(--sched-block-gap);
+}
+
+.page.schedule-today .schedule-note {
+  line-height: calc(var(--sched-line-spacing) + 0.1);
+}
+
+.frame .frame-nav {
+  position: fixed !important;
+  left: 0 !important;
+  right: var(--avatarW) !important;
+  bottom: 0 !important;
+  z-index: 999 !important;
+}
+
+/* Kill ALL bottom buffers that keep content above nav */
+.frame .frame-main,
+.frame .frame-content,
+.page.schedule-today {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Make sure the main area can reach the bottom of the viewport */
+.frame .frame-main {
+  height: calc(100vh - var(--headerH, 0px)) !important;
+}
+
+/* Optional: keep the hidden “under-nav” part from scrolling into view */
+.frame {
+  overflow: hidden !important;
+}
+
+/* Let schedule extend slightly past the bottom of the screen */
+.page.schedule-today {
+  padding-bottom: -10px !important;
+}
+
+.page.schedule-today .section:last-child {
+  margin-bottom: 10px !important;
+}
+.frame-main {
+  min-height: calc(100vh + 10px) !important;
+}
+
+/* 1) Nav bar owns the height */
+.frame-nav {
+  height: 200px; /* keep your current “roughly correct” height */
+  padding: 12px 16px;
+  display: flex;
+  align-items: stretch; /* children fill full nav height (minus padding) */
+  gap: 16px; /* consistent spacing */
+}
+
+/* 2) Buttons fill the nav height, and stay square */
+.frame-nav .nav-btn {
+  height: 100%;
+  aspect-ratio: 1 / 1; /* square */
+  width: auto; /* let aspect-ratio compute width from height */
+  flex: 0 0 auto; /* do NOT stretch wider */
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+:root {
+  /* One place to tune the whole schedule look */
+  --sched-gap: 16px;
+  --sched-header-gold: #e2c15a;
+
+  /* Big icons like the old version */
+  --sched-icon-size: 96px; /* bump to 110px if you want */
+  --sched-icon-gap: -6px;
+
+  --sched-line-spacing: 1.08;
+  --sched-block-gap: 0.38em;
+
+  --event-gold: #ffa544;
+  --event-text-dim: 0.65;
+}
+
+/* 3-column Today grid */
+.page.schedule-today {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sched-gap);
+  align-items: stretch;
+}
+
+/* Make the cards equal-height */
+.page.schedule-today .section {
+  height: 100%;
+  font-size: 1.35em; /* bigger overall */
+}
+
+/* Daypart headers */
+.page.schedule-today .section > h3 {
+  margin: 0 0 6px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+
+  font-size: 1.3em;
+  font-weight: 400;
+
+  color: var(--sched-header-gold);
+  opacity: 0.85;
+}
+
+/* Daypart header icon */
+.page.schedule-today .section > h3 img {
+  height: 44px;
+  width: auto;
+  transform: translateY(-9px);
+  transform-origin: left center;
+  margin-right: 12px;
+  opacity: 0.95;
+}
+
+/* Force EVERY schedule row to be a vertical stack (icon, then text) */
+.page.schedule-today .schedule-line {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+
+  margin: 10px 0 !important;
+  padding: 0 !important;
+}
+
+/* Icon sizing (single control) */
+.page.schedule-today .schedule-icon {
+  width: var(--sched-icon-size) !important;
+  height: var(--sched-icon-size) !important;
+  max-width: var(--sched-icon-size) !important;
+  max-height: var(--sched-icon-size) !important;
+  flex: 0 0 var(--sched-icon-size) !important;
+
+  display: block !important;
+  margin: 0 0 var(--sched-icon-gap) 0 !important;
+  opacity: 0.95;
+}
+
+/* Text spacing (this was part of the “feel”) */
+.page.schedule-today .schedule-label {
+  color: #ffffff;
+  line-height: var(--sched-line-spacing);
+  margin-bottom: var(--sched-block-gap);
+
+  /* Old “punch” */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.page.schedule-today .schedule-time {
+  font-weight: 600;
+  font-size: 1em;
+  white-space: nowrap;
+
+  text-transform: lowercase;
+  line-height: var(--sched-line-spacing);
+  margin-bottom: var(--sched-block-gap);
+}
+
+.page.schedule-today .schedule-note {
+  font-weight: 400;
+  font-style: normal;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  line-height: calc(var(--sched-line-spacing) + 0.12);
+}
+
+/* HARD KILL: event outline/shadow */
+.page.schedule-today .schedule-line.schedule-event-line {
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+}
+
+/* Event emphasis (gold system) */
+.page.schedule-today .schedule-line.schedule-event-line .schedule-icon,
+.page.schedule-today .schedule-line.schedule-event-line .schedule-time,
+.page.schedule-today .schedule-line.schedule-event-line .schedule-note {
+  color: var(--event-gold) !important;
+  opacity: var(--event-text-dim);
+}
+
+/* Event title back toward “bright” */
+.page.schedule-today .schedule-line.schedule-event-line .schedule-label {
+  color: #ffd445 !important;
+  opacity: 1 !important;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .page.schedule-today {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Home alert — event style */
+.home-message {
+  background: transparent;
+  border: none;
+  padding: 0;
+
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.15;
+
+  color: #e4bc35;
+
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: pre-line;
+  position: relative;
+  padding-left: 56px; /* room for icon */
+}
+
+/* Alarm icon */
+/* Event alarm icon (same as schedule) */
+
+/* Home alert (event-style) */
+.home-message.home-alert {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Icon — match schedule event icon sizing */
+.home-message-icon {
+  --icon: 36px;
+
+  width: var(--icon);
+  height: var(--icon);
+  flex: 0 0 var(--icon);
+
+  display: block;
+  opacity: 0.95;
+}
+
+/* Text wrapper */
+.home-message-text {
+  line-height: 1.15;
+  padding-top: 2px;
+}
+
+.home-alert-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+}
+
+.home-alert-btn:active {
+  transform: translateY(1px);
+}
+
+/* =========================================================
+   Avatar Bubble — Text Weights (FINAL)
+   ========================================================= */
+
+/* Base / normal */
+.avatarBubbleText {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: rgba(47, 102, 163, 0.95);
+}
+
+/* Emphasis — important phrases */
+.avatarBubbleText strong {
+  font-weight: 700;
+}
+
+/* Command / focus — clear instruction */
+.avatarBubbleText .cmd {
+  display: block;
+  margin-top: 10px;
+
+  font-weight: 900;
+  font-size: 30px;
+  letter-spacing: 0.4px;
+
+  color: #0b3c6f;
+}
+
+/* =========================================================
+   AVATAR BUBBLE — TEXT WEIGHT + COLOR SCALE (tm2 → tp2)
+   No opacity. Color does the work.
+   ========================================================= */
+
+/* Base reference color
+   If you already have a bubble text color variable, keep it.
+   Otherwise this safely defaults. */
+:root {
+  --bubble-blue-base: #396da7; /* current medium blue */
+}
+.avatar-bubble {
+  font-weight: 500;
+  color: var(--bubble-blue-base);
+}
+
+/* t-minus-2: very soft, background reassurance */
+.avatar-bubble .tm2 {
+  font-weight: 300;
+  color: color-mix(in srgb, var(--bubble-blue-base) 55%, white);
+}
+
+/* t-minus-1: normal explanation */
+.avatar-bubble .tm1 {
+  font-weight: 400;
+  color: color-mix(in srgb, var(--bubble-blue-base) 75%, white);
+}
+
+/* t-minus-0: neutral anchor */
+.avatar-bubble .txt {
+  font-weight: 500;
+  color: var(--bubble-blue-base);
+}
+
+/* t-plus-1: meaning / importance */
+.avatar-bubble .tp1 {
+  font-weight: 700;
+  color: color-mix(in srgb, var(--bubble-blue-base) 85%, black);
+}
+
+/* t-plus-2: single next action */
+.avatar-bubble .tp2 {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--bubble-blue-base) 95%, black);
+
+  /* subtle command emphasis, still text-first */
+  padding: 8px 12px;
+  border-radius: 14px;
+  border: 2px solid color-mix(in srgb, var(--bubble-blue-base) 65%, white);
+  background: transparent;
+}
+
+/* AVATAR BUBBLE — run styles (tm2/tm1/txt/tp1/tp2) */
+.avatarBubbleText .run {
+  font-weight: 500;
+  color: var(--bubble-blue-base);
+}
+
+.avatarBubbleText .run-tm2 {
+  font-weight: 300;
+  color: color-mix(in srgb, var(--bubble-blue-base) 55%, white);
+}
+.avatarBubbleText .run-tm1 {
+  font-weight: 400;
+  color: color-mix(in srgb, var(--bubble-blue-base) 75%, white);
+}
+.avatarBubbleText .run-txt {
+  font-weight: 500;
+  color: var(--bubble-blue-base);
+}
+.avatarBubbleText .run-tp1 {
+  font-weight: 700;
+  color: color-mix(in srgb, var(--bubble-blue-base) 85%, black);
+}
+.avatarBubbleText .run-tp2 {
+  font-weight: 800;
+  color: color-mix(in srgb, var(--bubble-blue-base) 95%, black);
+  letter-spacing: 0.02em;
+}
+
+/* SAY screens: calmer hierarchy + more air */
+.page.say .avatarBubbleContent {
+  padding: 36px 40px;
+}
+
+.page.say .bubble-gap {
+  height: 26px;
+}
+
+/* Helper buttons: secondary, grouped, lower energy */
+.page.say .avatarBubbleActions {
+  margin-top: 26px;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.page.say .avatarHearBtn {
+  font-size: 18px;
+  padding: 10px 16px;
+  border-radius: 999px;
+}
+
+.avatarPlate {
+  margin-top: 18px;
+  padding: 36px 40px;
+  border-radius: 26px;
+  background: var(--bubble-blue-plate);
+}
+
+.avatarPlate {
+  margin-top: 18px;
+  padding: 28px 30px;
+  border-radius: 22px;
+  background: #0b5f87; /* obvious for testing */
+  color: #ffffff;
+}
+
+/* ============================
+   SAY PLATE — LOCKED RECT (tile-grid snap)
+   Paste at VERY bottom of app.css
+   ============================ */
+
+.say-plate {
+  position: absolute;
+
+  /* 🔒 Locked to the 2×2 tile area (gold box) */
+  left: 24px;
+  bottom: 180px;
+  width: 760px;
+  height: 580px;
+
+  /* Lighter plate */
+  background: rgba(40, 54, 78, 0.92);
+  border-radius: 28px;
+
+  /* Center contents */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  padding: 40px 44px;
+  z-index: 20;
+}
+
+.say-text {
+  width: 100%;
+  text-align: center;
+
+  font-size: 56px; /* 2× avatar bubble base (28px → 56px) */
+  line-height: 1.2;
+  margin: 0 0 28px 0;
+  color: #ffffff;
+}
+
+.say-actions {
+  width: 100%;
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+}
+
+.say-btn {
+  flex: 1;
+  max-width: 320px;
+
+  font-size: 28px;
+  font-weight: 700;
+  padding: 18px 20px;
+
+  border-radius: 20px;
+  border: none;
+
+  background: #2c6bff;
+  color: #ffffff;
+}
+
+.say-btn:active {
+  transform: translateY(1px);
+}
+
+/* Optional: de-emphasize the helper bubble so the plate is the focus */
+.avatarBubble {
+  opacity: 0.75;
+}
+
+/* FILE: app.css (paste at VERY bottom)
+   RUN STYLES — shared by bubble + SAY plate
+   Your spans are: <span class="run run-tm2">...</span>
+*/
+
+.run {
+  display: inline;
+}
+
+/* Baseline */
+.run-txt {
+  font-weight: 600;
+  color: var(--bubble-blue-base);
+  font-size: 1em;
+}
+
+/* Muted helpers */
+.run-tm1 {
+  font-weight: 500;
+  color: rgba(110, 185, 255, 0.72);
+  font-size: 0.92em;
+}
+
+.run-tm2 {
+  font-weight: 300;
+  color: rgba(110, 185, 255, 0.6);
+  font-size: 0.86em;
+}
+
+/* Emphasis */
+.run-tp1 {
+  font-weight: 700;
+  color: rgba(110, 185, 255, 0.92);
+  font-size: 1.06em;
+}
+
+.run-tp2 {
+  font-weight: 800;
+  color: rgba(110, 185, 255, 1);
+  font-size: 1.14em;
+}
+
+/* FILE: app.css (paste at VERY bottom)
+   SAY PLATE — text scale + spacing adjustment
+*/
+
+/* Move SAY text up away from buttons */
+.say-text {
+  margin-bottom: 54px; /* was ~24px → +10px breathing room */
+}
+
+/* Scale ALL run styles inside SAY text by 1.5× */
+.say-text .run {
+  font-size: 1.5em;
+}
+
+/* Keep relative differences between styles */
+.say-text .run-tm1 {
+  font-size: 1.38em;
+}
+.say-text .run-tm2 {
+  font-size: 1.29em;
+}
+
+.say-text .run-txt {
+  font-size: 1.5em;
+}
+
+.say-text .run-tp1 {
+  font-size: 1.6em;
+}
+.say-text .run-tp2 {
+  font-size: 1.7em;
+}
+
+/* ============================
+   AVATAR BUBBLE ACTIONS
+   Smart sizing: single = auto, two = wide
+   ============================ */
+
+.avatarBubbleActions {
+  display: flex;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+/* Base button */
+.avatarHearBtn {
+  background: #2c6bff;
+  color: #ffffff;
+  border: none;
+
+  font-size: 20px;
+  font-weight: 500;
+  padding: 12px 18px;
+
+  border-radius: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.avatarHearBtn:active {
+  transform: translateY(1px);
+}
+
+/* Only stretch when there are TWO buttons */
+.avatarBubbleActions:has(button + button) .avatarHearBtn {
+  flex: 1;
+  text-align: center;
+}
+
+/* ============================
+   INFO PAGE — LINES (CALL STEPS)
+   3× larger for readability
+   ============================ */
+
+.section p {
+  font-size: 40px;
+  line-height: 1.35;
+  margin-bottom: 28px;
+}

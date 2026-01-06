@@ -1,0 +1,513 @@
+{
+  "meta": {
+    "app": "TutorContent",
+    "version": "0.5.0",
+    "_comment": "Screen content only. No global settings here. Keep this file safe to edit often."
+  },
+  "homePageId": "home",
+  "pages": {
+    "home": {
+      "_comment": "HOME — asks what David wants to do next, offering today, TV, and help.",
+      "type": "tiles",
+      "title": "HOME",
+      "avatarText": [
+        { "k": "tm1", "t": "Hi David" },
+        { "k": "tm2", "t": "." },
+
+        { "k": "tm2", "t": "\n" },
+
+        { "k": "tp1", "t": "How can I help you ?" },
+        { "k": "tm2", "t": " " }
+      ],
+
+      "avatarButtons": [],
+      "avatarBubbleMove": { "x": 0, "y": 0, "scale": 1 },
+      "avatarImage": { "scale": 1, "x": 0, "y": 0 },
+      "tiles": [
+        { "label": "What do I do today ?", "to": "schedule_today" },
+        { "label": "What can I watch on TV ?", "to": "tv_shows" }
+      ]
+    },
+
+    "schedule_today": {
+      "_comment": "TODAY — shows today’s schedule in morning, midday, and evening blocks.",
+      "type": "schedule",
+      "title": "TODAY",
+      "avatarText": [
+        { "k": "tm2", "t": "Your schedule for" },
+        { "k": "tm2", "t": " " },
+        { "k": "tm2", "t": "" },
+
+        { "k": "txt", "t": "{{dateLong}}" },
+        { "k": "tm2", "t": " " }
+      ],
+
+      "avatarButtons": [{ "label": "Back to home", "to": "home" }],
+      "sections": [
+        {
+          "heading": "MORNING",
+          "lines": [
+            {
+              "label": "Breakfast",
+              "time": "8:00 AM",
+              "note": "",
+              "kind": "normal"
+            },
+            {
+              "label": "Medicine",
+              "time": "9:00 AM",
+              "note": "",
+              "kind": "normal"
+            }
+          ]
+        },
+        {
+          "heading": "MIDDAY",
+          "lines": [
+            {
+              "label": "Lunch",
+              "time": "12:00 PM",
+              "note": "",
+              "kind": "normal"
+            }
+          ]
+        },
+        {
+          "heading": "EVENING",
+          "lines": [
+            {
+              "label": "Supper",
+              "time": "5:00 PM",
+              "note": "",
+              "kind": "normal"
+            },
+            {
+              "label": "Medicine",
+              "time": "8:00 PM",
+              "note": "",
+              "kind": "normal"
+            }
+          ]
+        }
+      ]
+    },
+    "call_home": {
+      "_comment": "CALL — instructions only (pinned simple version)",
+      "type": "info",
+      "title": "CALL",
+      "avatarText": [
+        { "k": "txt", "t": "Here’s how you" },
+        { "k": "tm2", "t": " \n" },
+        { "k": "tp2", "t": "call us" },
+        { "k": "tm2", "t": "." }
+      ],
+      "avatarButtons": [{ "label": "Back to home", "to": "home" }],
+      "lines": [
+        [
+          { "k": "txt", "t": "Pick up your " },
+          { "k": "tp2", "t": "phone" },
+          { "k": "tm2", "t": "." }
+        ],
+        [
+          { "k": "txt", "t": "Press the " },
+          { "k": "tp2", "t": "green button" },
+          { "k": "txt", "t": " to unlock it" },
+          { "k": "tm2", "t": "." }
+        ],
+        [
+          { "k": "txt", "t": "Tap the " },
+          { "k": "tp2", "t": "Phone icon" },
+          { "k": "tm2", "t": "." }
+        ],
+        [
+          { "k": "txt", "t": "Tap " },
+          { "k": "tp2", "t": "Contacts" },
+          { "k": "tm2", "t": "." }
+        ],
+        [
+          { "k": "txt", "t": "Tap " },
+          { "k": "tp2", "t": "Lance or Ilah" },
+          { "k": "tm2", "t": "." }
+        ],
+        [
+          { "k": "txt", "t": "Press the " },
+          { "k": "tp2", "t": "green Call button" },
+          { "k": "tm2", "t": "." }
+        ]
+      ]
+    },
+    "call_answer_phone": {
+      "_comment": "CALL — ANSWER PHONE — instruction screen",
+      "type": "info",
+      "title": "ANSWER THE PHONE",
+      "avatarText": [
+        { "k": "txt", "t": "Here's how you answer" },
+        { "k": "tm2", "t": " " }
+      ],
+      "avatarButtons": [{ "label": "Back to home", "to": "home" }],
+      "lines": [
+        [
+          { "k": "txt", "t": "When the phone rings" },
+          { "k": "tm2", "t": "," },
+          { "k": "tm2", "t": "\n" },
+          { "k": "tp2", "t": "look at the screen" },
+          { "k": "tm2", "t": "." }
+        ],
+        [
+          { "k": "txt", "t": "Slide the " },
+          { "k": "tp2", "t": "green button" },
+          { "k": "txt", "t": " to answer" },
+          { "k": "tm2", "t": "." }
+        ],
+        [
+          { "k": "txt", "t": "Hold the phone " },
+          { "k": "tp2", "t": "to your ear " },
+          { "k": "tm2", "t": "." }
+        ],
+        [
+          { "k": "txt", "t": "Say " },
+          { "k": "tp2", "t": "'Hello'" },
+          { "k": "tm2", "t": "." }
+        ]
+      ]
+    },
+    "phone_help": {
+      "_comment": "PHONE — choose call out or answer help",
+      "type": "tiles",
+      "title": "PHONE HELP",
+      "avatarText": [
+        { "k": "txt", "t": "What do you want help with" },
+        { "k": "tm2", "t": "?" }
+      ],
+      "avatarButtons": [{ "label": "Back to home", "to": "home" }],
+      "tiles": [
+        { "label": "How to call someone", "to": "call_home" },
+        { "label": "How to answer the phone", "to": "call_answer_phone" }
+      ]
+    },
+
+    "tv_shows": {
+      "_comment": "TV — SHOWS — offers a short list of favorite shows, plus a way to find more.",
+      "type": "tiles",
+      "title": "TV SHOWS",
+      "avatarText": [
+        { "k": "txt", "t": "Pick a show" },
+        { "k": "tm2", "t": ":" }
+      ],
+      "avatarButtons": [{ "label": "(Or go Back)", "to": "home" }],
+      "tiles": [
+        { "label": "Frasier", "to": "say_frasier" },
+        { "label": "Terminal List", "to": "say_terminal_list" },
+        { "label": "Reacher", "to": "say_reacher" }
+      ]
+    },
+
+    "say_power_up": {
+      "_comment": "SAY — POWER UP — shows the exact words to turn the TV on.",
+      "type": "say",
+      "title": "POWER UP",
+
+      "avatarText": [{ "k": "tm1", "t": "Say this" }],
+
+      "avatarPose": { "mode": "speak", "index": 3 },
+
+      "sayText": [
+        { "k": "tp1", "t": "Computer" },
+        { "k": "tm2", "t": " \n" },
+        { "k": "tp1", "t": "Power Up" },
+        { "k": "tm2", "t": " " }
+      ],
+
+      "sayButtons": [
+        { "label": "Hear it said", "action": "hear_say" },
+        { "label": "OK, go back", "to": "home" }
+      ],
+
+      "sayTts": "Computer, Power Up, ."
+    },
+
+    "say_power_down": {
+      "_comment": "SAY — POWER DOWN — shows the exact words to turn the TV off.",
+      "type": "say",
+      "title": "POWER DOWN",
+
+      "avatarText": [{ "k": "tm1", "t": "Say this" }],
+
+      "avatarPose": { "mode": "speak", "index": 3 },
+
+      "sayText": [
+        { "k": "tp1", "t": "Computer" },
+        { "k": "tm2", "t": " \n" },
+        { "k": "tp1", "t": "Power Down" },
+        { "k": "tm2", "t": " " }
+      ],
+
+      "sayButtons": [
+        { "label": "Hear it said", "action": "hear_say" },
+        { "label": "OK, go back", "to": "home" }
+      ],
+
+      "sayTts": "Computer, Power Down."
+    },
+
+    "say_frasier": {
+      "_comment": "SAY — FRASIER — shows the exact words to start Frasier.",
+      "type": "say",
+      "title": "FRASIER",
+
+      "avatarText": [{ "k": "tm1", "t": "Say this" }],
+
+      "avatarPose": { "mode": "speak", "index": 3 },
+
+      "sayText": [
+        { "k": "tp1", "t": "Computer" },
+        { "k": "tm2", "t": " \n" },
+        { "k": "tp1", "t": "watch" },
+        { "k": "tm2", "t": " " },
+        { "k": "tp1", "t": "Frasier" },
+        { "k": "tm2", "t": " " }
+      ],
+
+      "sayButtons": [
+        { "label": "Hear it said", "action": "hear_say" },
+        { "label": "OK, go back", "to": "tv_shows" }
+      ],
+
+      "sayTts": "Computer, watch Frasier."
+    },
+
+    "say_terminal_list": {
+      "_comment": "SAY — TERMINAL LIST — shows the exact words to start Terminal List.",
+      "type": "say",
+      "title": "TERMINAL LIST",
+
+      "avatarText": [{ "k": "tm1", "t": "Say this" }],
+
+      "avatarPose": { "mode": "speak", "index": 3 },
+
+      "sayText": [
+        { "k": "tp1", "t": "Computer" },
+        { "k": "tm2", "t": " \n" },
+        { "k": "tp1", "t": "watch" },
+        { "k": "tm2", "t": " \n" },
+        { "k": "tp1", "t": "Terminal List" },
+        { "k": "tm2", "t": " " }
+      ],
+
+      "sayButtons": [
+        { "label": "Hear it said", "action": "hear_say" },
+        { "label": "OK, go back", "to": "tv_shows" }
+      ],
+
+      "sayTts": "Computer, watch Terminal List."
+    },
+
+    "say_reacher": {
+      "_comment": "SAY — REACHER — shows the exact words to start Reacher.",
+      "type": "say",
+      "title": "REACHER",
+
+      "avatarText": [{ "k": "tm1", "t": "Say this" }],
+
+      "avatarPose": { "mode": "speak", "index": 3 },
+
+      "sayText": [
+        { "k": "tp1", "t": "Computer" },
+        { "k": "tm2", "t": " \n" },
+        { "k": "tp1", "t": "watch" },
+        { "k": "tm2", "t": " " },
+        { "k": "tp1", "t": "Reacher" },
+        { "k": "tm2", "t": " " }
+      ],
+
+      "sayButtons": [
+        { "label": "Hear it said", "action": "hear_say" },
+        { "label": "OK, go back", "to": "tv_shows" }
+      ],
+
+      "sayTts": "Computer, watch Reacher."
+    },
+
+    "help_home": {
+      "_comment": "HELP — HOME — offers help topics like TV, screen use, inputs, playback, DVDs, and other stuff.",
+      "type": "tiles",
+      "title": "HELP",
+      "avatarText": [
+        { "k": "tp2", "t": "I can help you " },
+        { "k": "tm2", "t": "..." },
+        { "k": "tm2", "t": "\n" },
+        { "k": "txt", "t": "What do you need" },
+        { "k": "tm2", "t": "?" }
+      ],
+      "avatarButtons": [{ "label": "Go back home", "to": "home" }],
+      "tiles": [{ "label": "Using the TV", "to": "help_tv" }]
+    },
+
+    "help_tv": {
+      "_comment": "HELP — TV — offers quick choices for power and watching something.",
+      "type": "tiles",
+      "title": "HELP: TV",
+      "avatarText": [
+        { "k": "txt", "t": "I’ll help you use the TV" },
+        { "k": "tm2", "t": "." },
+        { "k": "tm2", "t": "\n" },
+        { "k": "txt", "t": "You can always say what you want" },
+        { "k": "tm2", "t": "." }
+      ],
+      "avatarButtons": [{ "label": "Go back home", "to": "home" }],
+      "tiles": [
+        { "label": "Turn TV ON", "to": "say_power_up" },
+        { "label": "Turn TV OFF", "to": "say_power_down" },
+        { "label": "Watch a show", "to": "tv_shows" }
+      ]
+    },
+
+    "help_screen": {
+      "_comment": "HELP — SCREEN — explains touching buttons on the screen and taking your time.",
+      "type": "tiles",
+      "title": "HELP: SCREEN",
+      "avatarText": [
+        { "k": "txt", "t": "You can touch the buttons on the screen" },
+        { "k": "tm2", "t": "." },
+        { "k": "tm2", "t": "\n" },
+        { "k": "txt", "t": "Take your time" },
+        { "k": "tm2", "t": "." }
+      ],
+      "avatarButtons": [{ "label": "Go back home", "to": "home" }],
+      "tiles": [{ "label": "Home", "to": "home" }]
+    },
+
+    "help_inputs": {
+      "_comment": "HELP — INPUTS — explains how to switch between Cable, Fire TV, apps, and BluRay.",
+      "type": "info",
+      "title": "HELP: INPUTS",
+      "avatarText": [
+        { "k": "txt", "t": "Want to switch what the TV is showing" },
+        { "k": "tm2", "t": "?" },
+        { "k": "tm2", "t": "\n" },
+        { "k": "txt", "t": "Here’s how" },
+        { "k": "tm2", "t": "." }
+      ],
+      "avatarButtons": [{ "label": "Go back home", "to": "home" }],
+      "infoBlocks": [
+        {
+          "kind": "text",
+          "text": "Inputs include Cable/Spectrum, Fire TV (default), Prime, Samsung TV apps, Prime Live TV, Tubi, YouTube, and BluRay.\n\nWe’ll fill this in with the exact steps once the remote flow is finalized."
+        }
+      ]
+    },
+
+    "help_playback": {
+      "_comment": "HELP — PLAYBACK — explains play, pause, rewind, and moving around in a show.",
+      "type": "info",
+      "title": "HELP: PLAYBACK",
+      "avatarText": [
+        { "k": "txt", "t": "Need to pause, rewind, or go to the next episode" },
+        { "k": "tm2", "t": "?" },
+        { "k": "tm2", "t": "\n" },
+        { "k": "txt", "t": "Here’s how" },
+        { "k": "tm2", "t": "." }
+      ],
+      "avatarButtons": [{ "label": "Go back home", "to": "home" }],
+      "infoBlocks": [
+        {
+          "kind": "text",
+          "text": "We’ll fill this in with the exact voice phrases and remote buttons:\n- pause / play\n- rewind / fast forward\n- next episode\n- next season\n- start over"
+        }
+      ]
+    },
+
+    "help_dvds": {
+      "_comment": "HELP — DVDS — explains how to watch DVDs without listing them out.",
+      "type": "info",
+      "title": "HELP: DVDS",
+      "avatarText": [
+        { "k": "txt", "t": "Want to watch a DVD" },
+        { "k": "tm2", "t": "?" },
+        { "k": "tm2", "t": "\n" },
+        { "k": "txt", "t": "Here’s how" },
+        { "k": "tm2", "t": "." }
+      ],
+      "avatarButtons": [{ "label": "Go back home", "to": "home" }],
+      "infoBlocks": [
+        {
+          "kind": "text",
+          "text": "We won’t list DVDs here.\nThis screen will always remind you how to switch to the DVD input and start the disc."
+        }
+      ]
+    },
+
+    "help_other": {
+      "_comment": "HELP — OTHER — a place for general how-to items like lights, remotes, and other reminders.",
+      "type": "tiles",
+      "title": "HELP: OTHER",
+      "avatarText": [
+        { "k": "txt", "t": "What do you need help with" },
+        { "k": "tm2", "t": "?" }
+      ],
+      "avatarButtons": [{ "label": "Go back home", "to": "home" }],
+      "tiles": [{ "label": "Home", "to": "home" }]
+    },
+
+    "test_long_bubble": {
+      "_comment": "TEST — long bubble text + buttons",
+      "type": "info",
+      "title": "TEST",
+      "avatarText": [
+        { "k": "txt", "t": "This is a long test message" },
+        { "k": "tm2", "t": "." },
+        { "k": "tm2", "t": "\n\n" },
+
+        {
+          "k": "txt",
+          "t": "It should wrap cleanly, stay readable, and not cover the bottom buttons"
+        },
+        { "k": "tm2", "t": "." },
+        { "k": "tm2", "t": "\n\n" },
+
+        {
+          "k": "txt",
+          "t": "If it feels cramped, we will move the bubble left or widen it"
+        },
+        { "k": "tm2", "t": "." }
+      ],
+      "avatarButtons": [
+        { "label": "Go home", "to": "home" },
+        { "label": "Next test", "to": "test_say_buttons" }
+      ],
+      "lines": [
+        "This is just a test page.",
+        "Nothing here matters except layout."
+      ]
+    },
+
+    "test_say_buttons": {
+      "_comment": "TEST — SAY page with buttons and longer text",
+      "type": "say",
+      "title": "TEST SAY",
+      "avatarText": [
+        { "k": "txt", "t": "Say this" },
+        { "k": "tm2", "t": "." },
+        { "k": "tm2", "t": "\n\n" },
+
+        { "k": "tm2", "t": "Computer" },
+        { "k": "tm2", "t": ", " },
+        { "k": "txt", "t": "open" },
+        { "k": "tm2", "t": " " },
+        { "k": "tp2", "t": "Netflix" },
+        { "k": "tm2", "t": "." },
+        { "k": "tm2", "t": "\n\n" },
+
+        { "k": "txt", "t": "Then wait for the home screen to load" },
+        { "k": "tm2", "t": "." }
+      ],
+      "avatarButtons": [
+        { "label": "Hear it said", "action": "hear_say" },
+        { "label": "Back", "to": "test_long_bubble" },
+        { "label": "Done", "to": "home" }
+      ],
+      "avatarPose": { "mode": "speak", "index": 2 },
+      "sayText": "Computer, open Netflix"
+    }
+  }
+}

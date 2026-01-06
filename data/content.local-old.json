@@ -1,0 +1,304 @@
+{
+  "meta": {
+    "app": "TutorContent",
+    "version": "0.5.0",
+    "_comment": "Screen content only. No global settings here. Keep this file safe to edit often."
+  },
+  "homePageId": "home",
+  "pages": {
+    "home": {
+      "type": "menu",
+      "title": "HOME",
+      "avatarText": "Hi David. What would you like to see?",
+      "tiles": [
+        { "label": "What Am I Doing Today?", "to": "schedule_today" },
+        { "label": "What Can I Watch?", "to": "tv_home" },
+        { "label": "Show Me How To Do Stuff?", "to": "help_home" }
+      ]
+    },
+
+    "schedule_today": {
+      "type": "schedule",
+      "title": "TODAY",
+      "avatarText": "Here’s what’s going on today.",
+      "sections": [
+        {
+          "heading": "MORNING",
+          "lines": [
+            {
+              "label": "Breakfast",
+              "time": "8:00 AM",
+              "note": "Go down by 7:30."
+            },
+            {
+              "label": "Medicine",
+              "time": "9:00 AM",
+              "note": "Check the machine."
+            }
+          ]
+        },
+        {
+          "heading": "MIDDAY",
+          "lines": [
+            {
+              "label": "Lunch",
+              "time": "12:00 PM",
+              "note": "Go down by 11:30."
+            }
+          ]
+        },
+        {
+          "heading": "EVENING",
+          "lines": [
+            {
+              "label": "Supper",
+              "time": "5:00 PM",
+              "note": "Go down by 4:30."
+            },
+            {
+              "label": "Medicine",
+              "time": "6:00 PM",
+              "note": "Check the machine."
+            }
+          ]
+        }
+      ]
+    },
+
+    "tv_home": {
+      "type": "menu",
+      "title": "TV",
+      "avatarText": "What would you like to watch?",
+      "tiles": [
+        { "label": "TV Shows", "to": "tv_shows" },
+        { "label": "Movies", "to": "tv_movies" },
+        { "label": "Find something else", "to": "tv_find_something_else" },
+        { "label": "Go back home", "to": "home" }
+      ]
+    },
+
+    "tv_shows": {
+      "type": "menu",
+      "title": "TV SHOWS",
+      "avatarText": "Here are your choices:",
+      "tiles": [
+        { "label": "Back", "to": "tv_home" },
+        { "label": "Frasier", "to": "say_frasier" },
+        { "label": "Terminal List", "to": "say_terminal_list" },
+        { "label": "Reacher", "to": "say_reacher" },
+        { "label": "Find something else", "to": "tv_find_something_else" }
+      ]
+    },
+
+    "tv_movies": {
+      "type": "menu",
+      "title": "MOVIES",
+      "avatarText": "Pick a movie option:",
+      "tiles": [
+        { "label": "Back", "to": "tv_home" },
+        { "label": "Find something else", "to": "tv_find_something_else" },
+        { "label": "Go back home", "to": "home" }
+      ]
+    },
+
+    "tv_find_something_else": {
+      "type": "menu",
+      "title": "FIND SOMETHING ELSE",
+      "avatarText": "Try one of these:",
+      "tiles": [
+        { "label": "Back", "to": "tv_home" },
+        { "label": "News", "to": "tv_news" },
+        { "label": "Sports", "to": "tv_sports" },
+        { "label": "New stuff", "to": "say_explore" },
+        { "label": "DVDs", "to": "help_dvds" },
+        { "label": "Go back home", "to": "home" }
+      ]
+    },
+
+    "tv_news": {
+      "type": "menu",
+      "title": "NEWS",
+      "avatarText": "Choose the news.",
+      "tiles": [
+        { "label": "Back", "to": "tv_find_something_else" },
+        { "label": "Local news", "to": "say_news_local" },
+        { "label": "National news", "to": "say_news_national" },
+        { "label": "Weather", "to": "say_weather" },
+        { "label": "Go back home", "to": "home" }
+      ]
+    },
+
+    "tv_sports": {
+      "type": "menu",
+      "title": "SPORTS",
+      "avatarText": "Choose sports.",
+      "tiles": [
+        { "label": "Back", "to": "tv_find_something_else" },
+        { "label": "Live games", "to": "say_sports_live" },
+        { "label": "Sports news", "to": "say_sports_news" },
+        { "label": "Go back home", "to": "home" }
+      ]
+    },
+
+    "say_power_up": {
+      "type": "say",
+      "title": "POWER UP",
+      "displayText": "Try saying this:\nCOMPUTER, power up.",
+      "autoReturnTo": "tv_home"
+    },
+
+    "say_power_down": {
+      "type": "say",
+      "title": "POWER DOWN",
+      "displayText": "Try saying this:\nCOMPUTER, power down.",
+      "autoReturnTo": "tv_home"
+    },
+
+    "say_frasier": {
+      "type": "say",
+      "title": "FRASIER",
+      "displayText": "Try saying this:\nCOMPUTER, watch Frasier.",
+      "autoReturnTo": "tv_shows"
+    },
+
+    "say_terminal_list": {
+      "type": "say",
+      "title": "TERMINAL LIST",
+      "displayText": "Try saying this:\nCOMPUTER, watch Terminal List.",
+      "autoReturnTo": "tv_shows"
+    },
+
+    "say_reacher": {
+      "type": "say",
+      "title": "REACHER",
+      "displayText": "Try saying this:\nCOMPUTER, watch Reacher.",
+      "autoReturnTo": "tv_shows"
+    },
+
+    "say_news_local": {
+      "type": "say",
+      "title": "LOCAL NEWS",
+      "displayText": "Try saying this:\nCOMPUTER, show me some local news.",
+      "autoReturnTo": "tv_news"
+    },
+
+    "say_news_national": {
+      "type": "say",
+      "title": "NATIONAL NEWS",
+      "displayText": "Try saying this:\nCOMPUTER, show me some national news.",
+      "autoReturnTo": "tv_news"
+    },
+
+    "say_weather": {
+      "type": "say",
+      "title": "WEATHER",
+      "displayText": "Try saying this:\nCOMPUTER, what’s the weather today?",
+      "autoReturnTo": "tv_news"
+    },
+
+    "say_sports_live": {
+      "type": "say",
+      "title": "LIVE GAMES",
+      "displayText": "Try saying this:\nCOMPUTER, show me live sports.",
+      "autoReturnTo": "tv_sports"
+    },
+
+    "say_sports_news": {
+      "type": "say",
+      "title": "SPORTS NEWS",
+      "displayText": "Try saying this:\nCOMPUTER, show me sports news.",
+      "autoReturnTo": "tv_sports"
+    },
+
+    "say_explore": {
+      "type": "say",
+      "title": "NEW STUFF",
+      "displayText": "Try saying this:\nCOMPUTER, show me latest movies and shows.",
+      "autoReturnTo": "tv_find_something_else"
+    },
+
+    "help_home": {
+      "type": "menu",
+      "title": "HELP",
+      "avatarText": "I can help you with a few things. What do you need?",
+      "tiles": [
+        { "label": "Using the TV", "to": "help_tv" },
+        { "label": "Switching inputs", "to": "help_inputs" },
+        { "label": "Playback controls", "to": "help_playback" },
+        { "label": "DVDs", "to": "help_dvds" },
+        { "label": "Using this screen", "to": "help_screen" },
+        { "label": "Other stuff", "to": "help_other" },
+        { "label": "Go back home", "to": "home" }
+      ]
+    },
+
+    "help_tv": {
+      "type": "menu",
+      "title": "HELP: TV",
+      "avatarText": "I’ll help you use the TV. You can always say what you want.",
+      "tiles": [
+        { "label": "Turn TV on", "to": "say_power_up" },
+        { "label": "Turn TV off", "to": "say_power_down" },
+        { "label": "Watch a show", "to": "tv_shows" },
+        { "label": "Switch inputs", "to": "help_inputs" },
+        { "label": "Go back", "to": "help_home" },
+        { "label": "Go back home", "to": "home" }
+      ]
+    },
+
+    "help_inputs": {
+      "type": "info",
+      "title": "HELP: INPUTS",
+      "lines": [
+        "If the TV looks wrong, it may be on the wrong input.",
+        "Common inputs you might use:",
+        "• Cable / Spectrum",
+        "• Fire TV (default)",
+        "• BluRay / DVD player",
+        "Tip: If you’re stuck, go back home and try TV again."
+      ]
+    },
+
+    "help_playback": {
+      "type": "info",
+      "title": "HELP: PLAYBACK",
+      "lines": [
+        "You can control shows with the remote or your voice.",
+        "Common things to try:",
+        "• Pause / Play",
+        "• Rewind",
+        "• Skip ahead",
+        "• Next episode",
+        "If it doesn’t work the first time, try saying it again."
+      ]
+    },
+
+    "help_dvds": {
+      "type": "info",
+      "title": "HELP: DVDS",
+      "lines": [
+        "To watch a DVD, use the DVD player and switch the TV input to BluRay / DVD.",
+        "If you don’t see the DVD picture, switch inputs again until you do."
+      ]
+    },
+
+    "help_other": {
+      "type": "info",
+      "title": "HELP: OTHER",
+      "lines": [
+        "More help topics can be added here later.",
+        "Examples: lights, volume, remotes, and anything else you want to learn."
+      ]
+    },
+
+    "help_screen": {
+      "type": "info",
+      "title": "HELP: THIS SCREEN",
+      "lines": [
+        "You can touch the buttons on the screen.",
+        "Take your time.",
+        "If you get lost, press HOME."
+      ]
+    }
+  }
+}

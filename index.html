@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Tutor</title>
+
+    <!-- Main app styles -->
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
+
+  <body>
+    <!-- Full-screen app host -->
+    <div id="appHost" class="appHost">
+      <div id="debug"></div>
+
+      <!-- Status overlay (does not push layout) -->
+      <div id="status" class="status hidden"></div>
+    </div>
+
+    <!-- Embedded fallback for file:// -->
+    <script id="embedded-content" type="application/json"></script>
+
+    <!-- Core -->
+    <script src="js/validator.js"></script>
+    <script src="js/models.js"></script>
+    <script src="js/content-store.js"></script>
+    <script src="js/config-store.js"></script>
+    <script src="js/navigator.js"></script>
+
+    <!-- Services (non-UI logic) -->
+    <script src="js/services/comm-service.js"></script>
+    <script src="js/services/action-router.js"></script>
+
+    <!-- UI renderers (left pane only) -->
+    <script src="js/renderers/menu-page.js"></script>
+    <script src="js/renderers/say-page.js"></script>
+    <script src="js/renderers/schedule-page.js"></script>
+    <script src="js/renderers/info-page.js"></script>
+
+    <!-- Avatar + frame (right pane + shell) -->
+    <script src="js/avatar-pane.js"></script>
+    <script src="js/page-frame.js"></script>
+
+    <!-- Utilities -->
+    <script src="js/template.js"></script>
+    <script src="js/tts.js"></script>
+    <script src="js/idle-manager.js"></script>
+
+    <!-- Events -->
+    <script src="js/events-store.js"></script>
+    <script src="js/event-engine.js"></script>
+
+    <!-- App bootstrap (must load last) -->
+    <script src="js/app.js"></script>
+  </body>
+</html>

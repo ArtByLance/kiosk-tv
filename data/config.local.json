@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "app": "Tutor",
+    "version": "0.3.0"
+  },
+
+  "speech": {
+    "wakeWord": "COMPUTER",
+
+    "defaults": {
+      "autoReturnPageId": "home",
+      "autoReturnSeconds": 15
+    }
+  },
+
+  "providers": {
+    "keys": ["prime", "cable", "samsung_live", "prime_live"],
+
+    "labels": {
+      "prime": "Prime Video",
+      "cable": "Cable",
+      "samsung_live": "Samsung TV",
+      "prime_live": "Prime Live TV"
+    }
+  },
+
+  "content": {
+    "_comment": "Local file used during development. Later this can be replaced with a GitHub raw URL.",
+    "localPath": "data/content.local.json",
+
+    "_comment2": "When you add remote loading, use this key for last-known-good caching.",
+    "cacheKey": "tutor.content.lastKnownGood"
+  },
+
+  "contacts": {
+    "_comment": "People David can call. Environment-specific.",
+    "ilah": {
+      "name": "Ilah",
+      "phone": "14045561368"
+    },
+    "lance": {
+      "name": "Lance",
+      "phone": "16787777100"
+    }
+  },
+  "_notes": [
+    "Best practice: keep app config stable. Keep weekly edits in content.local.json only.",
+    "Wake word is stored here so content stays focused on screens and wording."
+  ]
+}

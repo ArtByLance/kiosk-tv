@@ -1,0 +1,123 @@
+{
+  "meta": {
+    "app": "TutorEvents",
+    "version": "0.1.0",
+    "timezone": "America/New_York",
+    "_comment": "Growing log of events and reusable templates. App should display the top active event on the Home message area. Keep past items for reference; archive yearly."
+  },
+  "rules": [
+    {
+      "id": "laundry_sat_evening",
+      "kind": "rule",
+      "enabled": true,
+      "tags": ["laundry"],
+      "priority": 50,
+      "message": "Laundry Day! Put your clothes out tonight.",
+      "schedule": {
+        "type": "weekly",
+        "dow": "MON",
+        "startLocal": "15:00",
+        "endLocal": "23:59"
+      },
+      "notes": "Shows on Saturdays. Adjust startLocal if you want it later in the day."
+    },
+    {
+      "id": "activity_friday_morning",
+      "kind": "rule",
+      "enabled": true,
+      "tags": ["activity"],
+      "priority": 40,
+      "message": "It’s Friday.\nAsk at the front desk about today’s activity.",
+      "schedule": {
+        "type": "weekly",
+        "dow": "FRI",
+        "startLocal": "07:00",
+        "endLocal": "13:00"
+      },
+      "notes": "Shows Friday morning through early afternoon."
+    }
+  ],
+  "events": [
+    {
+      "id": "template_family_visit",
+      "kind": "template",
+      "enabled": false,
+      "tags": ["visit"],
+      "priority": 90,
+      "message": "Just a reminder for today:\nLance is coming to see you.",
+      "schedule": {
+        "type": "date",
+        "dateLocal": "YYYY-MM-DD",
+        "startLocal": "08:00",
+        "endLocal": "20:00"
+      },
+      "notes": "Copy this and set dateLocal and message when you know a visit day."
+    },
+    {
+      "id": "template_appointment",
+      "kind": "template",
+      "enabled": false,
+      "tags": ["appointment"],
+      "priority": 95,
+      "message": "Just a reminder for today:\nYou have an appointment today.",
+      "schedule": {
+        "type": "date",
+        "dateLocal": "YYYY-MM-DD",
+        "startLocal": "08:00",
+        "endLocal": "20:00"
+      },
+      "notes": "Copy this and set dateLocal, times, and details."
+    },
+    {
+      "id": "template_special_note",
+      "kind": "template",
+      "enabled": false,
+      "tags": ["note"],
+      "priority": 80,
+      "message": "Just a reminder for today:\n[Write the note here.]",
+      "schedule": {
+        "type": "date",
+        "dateLocal": "YYYY-MM-DD",
+        "startLocal": "08:00",
+        "endLocal": "20:00"
+      },
+      "notes": "Generic one-off note."
+    },
+
+    {
+      "id": "visit",
+      "kind": "event",
+      "enabled": false,
+      "tags": ["visit"],
+      "priority": 90,
+      "message": "Lance and Ilah are coming to see you.",
+      "schedule": {
+        "type": "date",
+        "dateLocal": "2026-01-05",
+        "startLocal": "13:00",
+        "endLocal": "20:00"
+      },
+      "notes": "TEST visit day."
+    },
+
+    {
+      "id": "test_event_today",
+      "kind": "event",
+      "enabled": true,
+      "priority": 999,
+
+      "title": "Test event",
+      "note": "If you see this, events are working.",
+
+      "message": "Test event\nIf you see this, events are working.",
+
+      "schedule": {
+        "type": "weekly",
+        "dow": "THU",
+        "startLocal": "12:00",
+        "endLocal": "12:01"
+      },
+      "notes": "Temporary test event. Change dow to today's day."
+    }
+  ]
+}

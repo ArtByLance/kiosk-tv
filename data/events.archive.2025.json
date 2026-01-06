@@ -1,0 +1,9 @@
+{
+  "meta": {
+    "app": "TutorEventsArchive",
+    "year": 2025,
+    "timezone": "America/New_York",
+    "_comment": "Archived past events moved out of events.json to avoid bloat."
+  },
+  "events": []
+}
